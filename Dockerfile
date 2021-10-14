@@ -5,9 +5,11 @@ ARG VERSION
 WORKDIR /build
 
 RUN apt-get update && \
-    apt-get install -y git cargo clang cmake libsnappy-dev && \
-    git clone --depth 1 --branch v$VERSION --single-branch https://github.com/romanz/electrs.git . && \
-    cargo build --release --bin electrs
+    apt-get install -y git clang cmake curl && \
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none -y && \
+    git clone --depth 1 --branch v$VERSION --single-branch https://github.com/romanz/electrs.git .
+
+RUN ~/.cargo/bin/cargo build --release --bin electrs
 
 FROM debian:buster-slim
 
