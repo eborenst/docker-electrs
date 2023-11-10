@@ -16,7 +16,7 @@ jobs:
       - name: Set version from env
         run: echo "version=$(cat version)" >> $GITHUB_ENV
 
-      - name: Run Docker buildx
+      - name: Run Docker build
         run: |
           docker build \
           --platform linux/amd64 \
