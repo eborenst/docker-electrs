@@ -1,4 +1,4 @@
-name: Create Docker Image
+name: Create Docker Image w/ BuildX
 
 on:
   workflow_dispatch:
