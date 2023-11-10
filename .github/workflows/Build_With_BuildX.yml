@@ -1,0 +1,35 @@
+name: Create Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build electrs image
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Set version from env
+        run: echo "version=$(cat version)" >> $GITHUB_ENV
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Build and export
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          build-arg: VERSION=${{ env.version }}
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKER_USERNAME }}/electrs:${{ env.version }}
+          outputs: type=docker, dest=/tmp/myimage.tar
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ secrets.DOCKER_USERNAME }}_electrs_${{ env.version }}
+          path: /tmp/myimage.tar
