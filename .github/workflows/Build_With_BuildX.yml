@@ -23,7 +23,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          build-arg: VERSION=${{ env.version }}
+          build-args: VERSION=${{ env.version }}
           platforms: linux/amd64
           tags: ${{ secrets.DOCKER_USERNAME }}/electrs:${{ env.version }}
           outputs: type=docker, dest=/tmp/myimage.tar
